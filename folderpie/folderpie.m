@@ -1,4 +1,4 @@
-function folderpie(folder, opt)
+function h = folderpie(folder, opt)
 %FOLDERPIE Create layered pie chart of folder sizes
 %
 % folderpie(folder, opt)
@@ -9,12 +9,14 @@ function folderpie(folder, opt)
 %
 %   opt:    string of options to be passed to du command
 
-
-
-if nargin == 2
-    [s,r] = system(sprintf('du %s %s', opt, folder));
+if exist(folder, 'file')
+    r = fileread(folder);
 else
-    [s,r] = system(sprintf('du %s', folder));
+    if nargin == 2
+        [s,r] = system(sprintf('du %s %s', opt, folder));
+    else
+        [s,r] = system(sprintf('du %s', folder));
+    end
 end
 
 r = regexprep(r, 'du[^\n]*\n', ''); % Remove any du error messages (like Permission denied)
